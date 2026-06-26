@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...except the non-secret production build config (the public NEXT_PUBLIC_ RAG API URL),
+# which must be present at build time on Azure SWA. Secrets still go in .env.local (ignored).
+!.env.production
 
 # vercel
 .vercel
