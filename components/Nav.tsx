@@ -7,7 +7,7 @@ import { useState } from 'react'
 const links = [
   { href: '/ask', label: 'Ask' },
   { href: '/projects', label: 'Projects' },
-  { href: '/resume', label: 'Resume' },
+  { href: '/cv', label: 'CV' },
   { href: '/about', label: 'About' },
 ]
 
@@ -16,7 +16,7 @@ export default function Nav() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-sm print:hidden">
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <Link
           href="/"
