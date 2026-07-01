@@ -43,7 +43,7 @@ export default function Home() {
             </Link>
             <Link
               href="/cv"
-              className="inline-flex h-11 items-center rounded-full border border-neutral-300 px-6 text-sm font-medium text-neutral-900 transition-colors hover:border-neutral-900"
+              className="inline-flex h-11 items-center rounded-full border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-900 transition-colors hover:border-neutral-900"
             >
               Read my CV
             </Link>
