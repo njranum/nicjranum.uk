@@ -1,46 +1,49 @@
 /*
- * Source-card styling — archive aesthetic (M3.7-01, L3 D9; surface refresh from M3.3-01). Scoped
- * classes; colours and fonts come from the `--rag-*` custom properties the widget root defines
- * (these nodes render inside `.widget`, so the vars inherit). Explicit per-element colour/font
- * out-specifies host element-selector bleed. No accent colour — ink + paper + rules only.
+ * Source-card styling — aligned to the site design system. Scoped classes; colours and fonts come
+ * from the `--rag-*` custom properties the widget root defines (these nodes render inside `.widget`,
+ * so the vars inherit — now mapped onto the site's neutral scale + single accent). Rounded cards,
+ * Geist sans for titles/previews, monospace kept only for the tiny decorative record index and the
+ * eyebrow-style provenance tag. Explicit per-element colour/font out-specifies host bleed.
  */
 
 .sources {
-  margin-top: 0.85rem;
-  padding-top: 0.7rem;
-  border-top: 1px solid var(--rag-rule-hair); /* hairline inside the pair: answer -> sources */
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rag-border); /* hairline inside the pair: answer -> sources */
 }
 
-/* Summary line — the whole collapsed/expandable control. A real <button>, laid out as the inverted
-   provenance tag + count + chevron in one row. Focus ring comes from the widget-root rule. */
+/* Summary line — the whole collapsed/expandable control. A real <button>. */
 .summary {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   padding: 0;
   border: 0;
   background: transparent;
-  font-family: var(--rag-font-mono);
+  font-family: var(--rag-font-sans);
   cursor: pointer;
 }
 
-/* Inverted label block — provenance assertion ("From Nic's portfolio"), NOT a causation claim.
-   Real sentence-case text uppercased in CSS so a screen reader doesn't spell out the caps. */
+/* Small accent-tinted provenance tag — mirrors the home page's tech-stack tags (mono, tiny,
+   accent/10). A provenance assertion ("From Nic's portfolio"), NOT a causation claim. Real
+   sentence-case text uppercased in CSS so a screen reader doesn't spell out the caps. */
 .provenance {
   margin: 0;
   display: inline-block;
-  padding: 0.12rem 0.45rem;
-  background: var(--rag-ink);
-  color: var(--rag-paper);
+  padding: 0.12rem 0.5rem;
+  border-radius: 6px;
+  background: var(--rag-accent-tint);
+  color: var(--rag-accent);
   font-family: var(--rag-font-mono);
   font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .count {
-  font-size: 0.72rem;
+  font-family: var(--rag-font-sans);
+  font-size: 0.8rem;
   color: var(--rag-muted);
 }
 
@@ -58,17 +61,18 @@
 .cardList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.6rem;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
 }
 .cardList[hidden] {
   display: none; /* out-specifies the flex display so the collapsed panel truly hides */
 }
 
+/* Rounded card on a white surface — matches the home page's project cards. */
 .card {
-  padding: 0.55rem 0.65rem;
-  border: 1px solid var(--rag-ink);
-  border-radius: 0;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--rag-border);
+  border-radius: 12px;
   background: var(--rag-paper);
 }
 
@@ -76,30 +80,31 @@
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.35rem;
 }
 
+/* Decorative record index — kept mono (tiny), like the home page's small metadata treatments. */
 .cardIndex {
   flex: none;
   font-family: var(--rag-font-mono);
   font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--rag-muted);
+  font-weight: 600;
+  color: var(--rag-eyebrow);
 }
 
 .cardTitle {
   margin: 0;
-  font-family: var(--rag-font-mono);
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-family: var(--rag-font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--rag-ink);
 }
 
 .preview {
   margin: 0;
-  font-family: var(--rag-font-mono);
-  font-size: 0.78rem;
-  line-height: 1.45;
+  font-family: var(--rag-font-sans);
+  font-size: 0.875rem;
+  line-height: 1.55;
   color: var(--rag-muted);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -109,19 +114,26 @@
 
 .readMore {
   display: inline-block;
-  margin-top: 0.35rem;
-  font-family: var(--rag-font-mono);
-  font-size: 0.76rem;
-  font-weight: 600;
-  color: var(--rag-ink);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  margin-top: 0.45rem;
+  font-family: var(--rag-font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--rag-accent);
+  text-decoration: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .readMore {
+    transition: opacity 0.15s;
+  }
+}
+.readMore:hover {
+  opacity: 0.7;
 }
 
 .noLink {
   display: inline-block;
-  margin-top: 0.35rem;
-  font-family: var(--rag-font-mono);
-  font-size: 0.72rem;
+  margin-top: 0.45rem;
+  font-family: var(--rag-font-sans);
+  font-size: 0.8rem;
   color: var(--rag-faint);
 }
