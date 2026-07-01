@@ -25,6 +25,17 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Always keep a vertical scrollbar track present. During page transitions the
+   old view unmounts before the new one mounts (AnimatePresence mode="wait"), so
+   the document briefly shrinks; without this the scrollbar disappears and
+   reappears, widening then narrowing the viewport and shifting the centered
+   content left-then-back. `overflow-y: scroll` forces the track in every browser;
+   `scrollbar-gutter: stable` is the cleaner modern equivalent where supported. */
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
