@@ -1,64 +1,112 @@
-import Image from "next/image";
+import Link from 'next/link'
+import { projects } from '@/lib/projects'
+import HeroAsk from '@/components/HeroAsk'
+import HeroIntro from '@/components/HeroIntro'
+
+// Feature the non-RAG projects here — the RAG widget is the hero's own Ask entry point.
+const featured = projects.filter(p => p.slug !== 'rag')
+
 export default function Home() {
-	return (
-		<div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-			<main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-				<Image
-					className="dark:invert"
-					src="/next.svg"
-					alt="Next.js logo"
-					width={100}
-					height={20}
-					priority
-				/>
-				<div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-					<h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-						To get started, edit the page.tsx file.
-					</h1>
-					<p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-						Looking for a starting point or more instructions? Head over to{" "}
-						<a
-							href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-							className="font-medium text-zinc-950 dark:text-zinc-50"
-						>
-							Templates
-						</a>{" "}
-						or the{" "}
-						<a
-							href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-							className="font-medium text-zinc-950 dark:text-zinc-50"
-						>
-							Learning
-						</a>{" "}
-						center.
-					</p>
-				</div>
-				<div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-					<a
-						className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-						href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<Image
-							className="dark:invert"
-							src="/vercel.svg"
-							alt="Vercel logomark"
-							width={16}
-							height={16}
-						/>
-						Deploy Now
-					</a>
-					<a
-						className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-						href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Documentation
-					</a>
-				</div>
-			</main>
-		</div>
-	);
+  return (
+    <main className="flex-1">
+      {/* Fluid container — caps at 1200px on ultra-wide screens, scales its side gutters below that. */}
+      <div className="mx-auto w-[min(1200px,92vw)]">
+        {/* Hero — a deliberate full-viewport section (min 100svh, capped so it never looks absurd on
+            very tall screens), content vertically centred so the whitespace reads as intentional
+            breathing room. Two columns above 900px (copy + CTAs left, Ask panel right); below that it
+            collapses to one column. DOM order is copy → ask → CTAs, so the stack never reverses. */}
+        <section className="grid gap-[clamp(2rem,5vh,3rem)] pt-[clamp(1.5rem,4vh,3rem)] pb-[var(--section-space)] min-[900px]:grid-cols-2 min-[900px]:gap-x-12">
+          {/* Copy — column 1, row 1 (always first) */}
+          <div className="min-[900px]:col-start-1 min-[900px]:row-start-1">
+            <HeroIntro />
+          </div>
+
+          {/* Ask panel — column 2, spanning both rows and vertically centred against the left stack */}
+          <div className="min-[900px]:col-start-2 min-[900px]:row-span-2 min-[900px]:self-center">
+            <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
+              <p className="font-mono text-xs font-medium uppercase tracking-widest text-neutral-400">
+                Ask this site
+              </p>
+              <div className="mt-3">
+                <HeroAsk />
+              </div>
+            </div>
+          </div>
+
+          {/* CTAs — column 1, row 2 (directly under the copy on desktop; last on mobile) */}
+          <div className="flex flex-wrap gap-3 min-[900px]:col-start-1 min-[900px]:row-start-2">
+            <Link
+              href="/projects"
+              className="inline-flex h-11 items-center rounded-full bg-neutral-900 px-6 text-sm font-medium text-white transition-colors hover:bg-neutral-700"
+            >
+              View projects
+            </Link>
+            <Link
+              href="/cv"
+              className="inline-flex h-11 items-center rounded-full border border-neutral-300 px-6 text-sm font-medium text-neutral-900 transition-colors hover:border-neutral-900"
+            >
+              Read my CV
+            </Link>
+          </div>
+        </section>
+
+        {/* Projects strip — same shared spacing scale top and bottom as the hero rhythm. */}
+        <section className="py-[var(--section-space)]">
+          <h2 className="font-mono text-sm font-medium uppercase tracking-widest text-neutral-400">
+            Selected work
+          </h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {featured.map(({ slug, name, tagline, status, stack }) => (
+              <Link
+                key={slug}
+                href={`/projects/${slug}`}
+                className="group rounded-2xl border border-neutral-200 p-6 transition duration-200 hover:border-neutral-300 hover:bg-neutral-50 hover:shadow-md motion-safe:hover:-translate-y-1"
+              >
+                <h3 className="flex items-center justify-between text-lg font-medium text-neutral-900">
+                  {name}
+                  <span className="text-neutral-400 transition-transform group-hover:translate-x-1">
+                    →
+                  </span>
+                </h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-neutral-600">{tagline}</p>
+
+                {/* Tech-stack tags — mono, accent-tinted. Capped so a long stack doesn't wrap forever. */}
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {stack.slice(0, 4).map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-md bg-accent/10 px-2 py-0.5 font-mono text-xs text-accent"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Status dot — semantic (green = shipped, amber = in progress), with a mono label. */}
+                <div className="mt-4 flex items-center gap-1.5">
+                  <span
+                    aria-hidden="true"
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      status === 'shipped' ? 'bg-emerald-500' : 'bg-amber-500'
+                    }`}
+                  />
+                  <span className="font-mono text-xs uppercase tracking-wide text-neutral-400">
+                    {status === 'shipped' ? 'Shipped' : 'In progress'}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-6">
+            <Link
+              href="/projects"
+              className="text-sm font-medium text-accent transition-opacity hover:opacity-70"
+            >
+              See all projects →
+            </Link>
+          </div>
+        </section>
+      </div>
+    </main>
+  )
 }

@@ -33,7 +33,7 @@ export default function Nav() {
                 href={href}
                 className={`text-sm transition-colors ${
                   pathname === href
-                    ? 'font-medium text-neutral-900'
+                    ? 'font-medium text-accent'
                     : 'text-neutral-500 hover:text-neutral-900'
                 }`}
               >
@@ -69,7 +69,7 @@ export default function Nav() {
                 onClick={() => setOpen(false)}
                 className={`block text-sm transition-colors ${
                   pathname === href
-                    ? 'font-medium text-neutral-900'
+                    ? 'font-medium text-accent'
                     : 'text-neutral-500 hover:text-neutral-900'
                 }`}
               >

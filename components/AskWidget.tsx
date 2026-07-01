@@ -194,6 +194,20 @@ export default function AskWidget() {
   // so the catch stays quiet), which also prevents set-state-after-unmount and a leaked reader.
   useEffect(() => () => abortRef.current?.abort(ABORT_UNMOUNT), []);
 
+  // Accept an incoming query from a link — the landing-page hero navigates here as /ask?q=… and we
+  // run it once on mount through the same `ask` entry point as the form and chips. Read client-side
+  // from `window` (no useSearchParams → no Suspense boundary needed under `output: 'export'`), and
+  // fire via a cleared setTimeout so React's StrictMode double-invoke in dev can't leave a throwaway
+  // request hanging: the discarded mount's timer is cleared before it fires, so `ask` runs exactly
+  // once on the surviving instance.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q")?.trim();
+    if (!q) return;
+    const id = setTimeout(() => void ask(q), 0);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Return to the base state (M3.2-01 RESET): drop the transcript, clear the input, refocus. Any
   // in-flight stream is silently cancelled via the existing abort reason (no error is surfaced).
   function startOver() {

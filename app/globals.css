@@ -9,11 +9,18 @@
   color-scheme: light;
   --background: #ffffff;
   --foreground: #171717;
+  /* The site's single accent. Used sparingly — headline tail, links, active nav, tech tags.
+     (The /ask RAG widget owns its own `--rag-*` palette and is deliberately unaffected.) */
+  --accent: #4f46e5;
+  /* One shared fluid vertical rhythm — every section uses this so spacing scales together
+     from small screens to large monitors instead of leaving fixed gaps. */
+  --section-space: clamp(3rem, 8vh, 7rem);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
