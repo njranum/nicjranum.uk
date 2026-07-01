@@ -8,7 +8,7 @@ const featured = projects.filter(p => p.slug !== 'rag')
 
 export default function Home() {
   return (
-    <main className="page-dots flex-1">
+    <main className="flex-1">
       {/* Fluid container — caps at 1200px on ultra-wide screens, scales its side gutters below that. */}
       <div className="mx-auto w-[min(1200px,92vw)]">
         {/* Hero — a deliberate full-viewport section (min 100svh, capped so it never looks absurd on
