@@ -11,11 +11,21 @@ export default function Home() {
     <main className="flex-1">
       {/* Fluid container — caps at 1200px on ultra-wide screens, scales its side gutters below that. */}
       <div className="mx-auto w-[min(1200px,92vw)]">
+        {/* Availability pill — pinned top-right, just below the nav. */}
+        <div className="flex justify-end pt-[clamp(1.5rem,4vh,3rem)]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-3 py-1 font-mono text-xs text-neutral-600">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-accent animate-dot-pulse" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+            </span>
+            Available for work
+          </span>
+        </div>
         {/* Hero — a deliberate full-viewport section (min 100svh, capped so it never looks absurd on
             very tall screens), content vertically centred so the whitespace reads as intentional
             breathing room. Two columns above 900px (copy + CTAs left, Ask panel right); below that it
             collapses to one column. DOM order is copy → ask → CTAs, so the stack never reverses. */}
-        <section className="grid gap-[clamp(2rem,5vh,3rem)] pt-[clamp(1.5rem,4vh,3rem)] pb-[var(--section-space)] min-[900px]:grid-cols-2 min-[900px]:gap-x-12">
+        <section className="grid gap-[clamp(2rem,5vh,3rem)] pt-[clamp(1rem,2vh,1.5rem)] pb-[var(--section-space)] min-[900px]:grid-cols-2 min-[900px]:gap-x-12">
           {/* Copy — column 1, row 1 (always first) */}
           <div className="min-[900px]:col-start-1 min-[900px]:row-start-1">
             <HeroIntro />
