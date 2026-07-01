@@ -28,7 +28,9 @@ import type { Source } from "@/lib/types";
 const PROVENANCE_LABEL = "From Nic's portfolio";
 
 export default function SourceCards({ sources }: { sources: Source[] }) {
-  const [expanded, setExpanded] = useState(false);
+  // Expanded by default — the sources it used are the point of the page, so show them rather than
+  // hide them behind a click. Still collapsible for a long multi-turn transcript.
+  const [expanded, setExpanded] = useState(true);
   const panelId = useId();
   if (sources.length === 0) return null;
   const cards = groupByTitle(sources);

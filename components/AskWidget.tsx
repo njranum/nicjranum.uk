@@ -11,9 +11,11 @@
  * retry, abort-on-unmount (M3.5 / L3 D7); a11y — hidden polite live region announcing the settled
  * answer/decline/error once, label, focus-stays-on-input, structural prefixes (M3.6 / L3 D8);
  * styling & theming — CSS Modules + root reset, owned custom-property palette, AA contrast,
- * reduced-motion, dark mode, archive/changelog aesthetic (ink-on-paper, square, mono UI + serif
- * answer body) (M3.7 / L3 D9). The restyle is purely visual — this component's state machine,
- * SSE consumption, fetch/abort policy, and a11y contract are unchanged.
+ * reduced-motion, dark mode (M3.7 / L3 D9). The palette is mapped onto the site design system
+ * (home-page neutral scale + single accent): one soft rounded panel, Geist sans for headings/body,
+ * rounded pill chips, a filled dark "Ask" button, monospace kept only for the tiny eyebrow labels.
+ * The restyle is purely visual — this component's state machine, SSE consumption, fetch/abort
+ * policy, and a11y contract are unchanged.
  */
 
 import { type FormEvent, type KeyboardEvent, useEffect, useReducer, useRef, useState } from "react";
@@ -87,9 +89,9 @@ function ExchangeView({
     <div className={styles.exchange}>
       <p className={styles.question}>
         <span style={srOnly}>You asked: </span>
-        {/* Inverted mono tag — decorative (the srOnly "You asked:" carries the meaning to AT, so the
-            visible tag is aria-hidden to avoid a duplicate announcement). Sentence-case text with
-            CSS uppercase so a screen reader never spells out the caps. */}
+        {/* Small accent-tinted tag — decorative (the srOnly "You asked:" carries the meaning to AT,
+            so the visible tag is aria-hidden to avoid a duplicate announcement). Sentence-case text
+            with CSS uppercase so a screen reader never spells out the caps. */}
         <span className={styles.askedTag} aria-hidden="true">
           Asked
         </span>
@@ -97,10 +99,21 @@ function ExchangeView({
       </p>
       {error !== null && answer.length === 0 ? (
         <p className={styles.errorText}>{ERROR_COPY[error]}</p>
+      ) : pending && answer.length === 0 ? (
+        // Pre-first-token loading state — a clear "working on it" cue while the server retrieves and
+        // the model starts composing. Visual only; the settled answer is announced via the live region.
+        <p className={styles.loading} aria-hidden="true">
+          <span className={styles.dot} />
+          <span className={styles.dot} />
+          <span className={styles.dot} />
+          <span className={styles.loadingLabel}>
+            {sources.length ? "Composing an answer…" : "Searching my portfolio…"}
+          </span>
+        </p>
       ) : (
         <p className={styles.answer}>
           <span style={srOnly}>Answer: </span>
-          {answer || (pending ? <span className={styles.pending}>▋</span> : "")}
+          {answer}
           {interrupted && <span className={styles.interrupted}> — the response was interrupted</span>}
         </p>
       )}
@@ -264,19 +277,11 @@ export default function AskWidget() {
       <div aria-live="polite" aria-atomic="true" style={srOnly}>
         {announcement}
       </div>
-      {/* Header bar: a decorative mono system tag (aria-hidden — the page <h1> is the real heading,
-          not duplicated here) on the left, the start-over control on the right. */}
-      <header className={styles.header}>
-        <span className={styles.headerTag} aria-hidden="true">
-          Portfolio · Q&amp;A
-        </span>
-        {!atBase && (
-          <button
-            type="button"
-            className={styles.reset}
-            onClick={startOver}
-            aria-label="Start over"
-          >
+      {/* Start-over control — only once there's something to reset (the page <h1> is the real
+          heading, so nothing is duplicated at the top of the empty state). */}
+      {!atBase && (
+        <header className={styles.header}>
+          <button type="button" className={styles.reset} onClick={startOver}>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -289,9 +294,10 @@ export default function AskWidget() {
               <path d="M21 12a9 9 0 1 1-2.64-6.36" />
               <polyline points="21 3 21 9 15 9" />
             </svg>
+            Start over
           </button>
-        )}
-      </header>
+        </header>
+      )}
       <div className={styles.transcript} ref={transcriptRef} onScroll={onTranscriptScroll}>
         {state.transcript.map((ex, i) => (
           <ExchangeView key={i} question={ex.question} answer={ex.answer} sources={ex.sources} />
@@ -301,7 +307,7 @@ export default function AskWidget() {
             question={state.question}
             answer={state.answer}
             sources={state.sources}
-            pending={state.status === "submitting"}
+            pending={busy}
             error={state.status === "error" ? (state.error ?? "stream") : null}
           />
         )}
@@ -334,13 +340,10 @@ export default function AskWidget() {
         <label htmlFor="ask-input" style={srOnly}>
           Ask a question about Nic
         </label>
-        {/* Terminal-style input: a "›" prompt marker + borderless field inside a 1.5px ink box,
-            with the inverted ASK button butted against it via a 1.5px divider. Behaviour unchanged
-            — submit still fires through the form's onSubmit / Enter handler. */}
+        {/* Rounded input box (hairline border, white surface) with the borderless field and the
+            filled dark "Ask" button — matches the home hero's Ask box. Behaviour unchanged — submit
+            still fires through the form's onSubmit / Enter handler. */}
         <div className={styles.inputBox}>
-          <span className={styles.prompt} aria-hidden="true">
-            ›
-          </span>
           <textarea
             id="ask-input"
             ref={inputRef}
@@ -350,9 +353,11 @@ export default function AskWidget() {
             onKeyDown={onKeyDown}
             rows={3}
             maxLength={MAX_CHARS}
-            placeholder="What would you like to know?"
+            placeholder="Ask me anything about my work…"
           />
-          <button type="submit" className={styles.send} disabled={busy || !question.trim()}>
+          {/* Enabled-looking by default (matches the always-active home hero button); `ask()` no-ops
+              on empty input. Only disabled mid-stream, where it shows a subtle busy state. */}
+          <button type="submit" className={styles.send} disabled={busy}>
             {busy ? "Asking…" : "Ask"}
           </button>
         </div>
