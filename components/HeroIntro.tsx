@@ -25,6 +25,16 @@ export default function HeroIntro() {
 
   return (
     <motion.div {...motionProps}>
+      {/* Availability pill — mono, with an accent dot that pulses (motion-safe only). */}
+      <motion.div variants={itemVariants} className="mb-5">
+        <span className="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-3 py-1 font-mono text-xs text-neutral-600">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-accent animate-dot-pulse" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+          </span>
+          Available for work
+        </span>
+      </motion.div>
       <motion.p
         variants={itemVariants}
         className="font-mono text-sm font-medium uppercase tracking-widest text-neutral-400"

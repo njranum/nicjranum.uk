@@ -8,7 +8,7 @@ const featured = projects.filter(p => p.slug !== 'rag')
 
 export default function Home() {
   return (
-    <main className="flex-1">
+    <main className="page-dots flex-1">
       {/* Fluid container — caps at 1200px on ultra-wide screens, scales its side gutters below that. */}
       <div className="mx-auto w-[min(1200px,92vw)]">
         {/* Hero — a deliberate full-viewport section (min 100svh, capped so it never looks absurd on
@@ -50,8 +50,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Projects strip — same shared spacing scale top and bottom as the hero rhythm. */}
-        <section className="py-[var(--section-space)]">
+        {/* Projects strip — the gap above comes from the hero's bottom padding, so only pad the
+            bottom here to avoid doubling the shared spacing at the section boundary. */}
+        <section className="pb-[var(--section-space)]">
           <h2 className="font-mono text-sm font-medium uppercase tracking-widest text-neutral-400">
             Selected work
           </h2>
@@ -60,7 +61,7 @@ export default function Home() {
               <Link
                 key={slug}
                 href={`/projects/${slug}`}
-                className="group rounded-2xl border border-neutral-200 p-6 transition duration-200 hover:border-neutral-300 hover:bg-neutral-50 hover:shadow-md motion-safe:hover:-translate-y-1"
+                className="group rounded-2xl border border-neutral-200 bg-white p-6 transition duration-200 hover:border-accent hover:bg-neutral-50 hover:shadow-md motion-safe:hover:-translate-y-1"
               >
                 <h3 className="flex items-center justify-between text-lg font-medium text-neutral-900">
                   {name}
