@@ -9,7 +9,6 @@ const links = [
   { href: '/ask', label: 'Ask' },
   { href: '/projects', label: 'Projects' },
   { href: '/cv', label: 'CV' },
-  { href: '/about', label: 'About' },
 ]
 
 export default function Nav() {
