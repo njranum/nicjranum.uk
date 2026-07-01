@@ -9,11 +9,18 @@
   color-scheme: light;
   --background: #ffffff;
   --foreground: #171717;
+  /* The site's single accent. Used sparingly — headline tail, links, active nav, tech tags.
+     (The /ask RAG widget owns its own `--rag-*` palette and is deliberately unaffected.) */
+  --accent: #4f46e5;
+  /* One shared fluid vertical rhythm — every section uses this so spacing scales together
+     from small screens to large monitors instead of leaving fixed gaps. */
+  --section-space: clamp(3rem, 8vh, 7rem);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -22,6 +29,44 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Blinking caret for the animated ask-box placeholder. All motion is gated behind the no-preference
+   query, so under prefers-reduced-motion the caret simply stays solid (and the typewriter JS is
+   disabled independently). */
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Pulsing halo for the "Available for work" dot — a wider, more pronounced ring than Tailwind's
+   default ping so it actually reads as a pulse. */
+@keyframes dot-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  70%,
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-caret {
+    animation: caret-blink 1s steps(1, end) infinite;
+  }
+
+  .animate-dot-pulse {
+    animation: dot-pulse 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
 }
 
 /* Print: keep the light page and add sensible page margins for PDF export. */

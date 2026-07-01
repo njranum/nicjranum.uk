@@ -31,10 +31,10 @@ export default function Nav() {
             <li key={href}>
               <Link
                 href={href}
-                className={`text-sm transition-colors ${
+                className={`relative text-sm transition-colors after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:bg-current after:content-[''] motion-safe:after:transition-transform motion-safe:after:duration-200 ${
                   pathname === href
-                    ? 'font-medium text-neutral-900'
-                    : 'text-neutral-500 hover:text-neutral-900'
+                    ? 'font-medium text-accent after:scale-x-100'
+                    : 'text-neutral-500 hover:text-neutral-900 after:scale-x-0 hover:after:scale-x-100'
                 }`}
               >
                 {label}
@@ -69,7 +69,7 @@ export default function Nav() {
                 onClick={() => setOpen(false)}
                 className={`block text-sm transition-colors ${
                   pathname === href
-                    ? 'font-medium text-neutral-900'
+                    ? 'font-medium text-accent'
                     : 'text-neutral-500 hover:text-neutral-900'
                 }`}
               >
