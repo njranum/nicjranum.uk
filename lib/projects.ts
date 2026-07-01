@@ -112,6 +112,34 @@ export const projects: Project[] = [
         body: 'The widget is split into independently designed layers so each can be reasoned about and tested on its own: a Notion ingestion pipeline, a Python/FastAPI retrieval-and-serving pipeline, and a React streaming frontend. Embedding is a hosted API call by design — there is deliberately no local torch / sentence-transformers dependency.',
       },
     ],
+    media: [
+      {
+        src: '/projects/rag/demo.gif',
+        alt: 'A full ask-me-anything cycle — type a question, watch the answer stream in token by token, source cards appear, then an off-topic question is politely declined by the relevance gate.',
+        caption: 'One full cycle: ask a question, watch it stream in, see the sources — then an off-topic question is turned away by the relevance gate.',
+        featured: true,
+      },
+      {
+        src: '/projects/rag/widget_idle.png',
+        alt: 'The idle Ask Me Anything widget with an empty question box and suggested-question chips.',
+        caption: 'The idle widget — an empty ask box with suggested questions to get started.',
+      },
+      {
+        src: '/projects/rag/widget_streaming.png',
+        alt: 'The widget rendering an answer as it streams in token by token from the FastAPI backend over SSE.',
+        caption: 'An answer streaming in token by token, served over SSE from FastAPI.',
+      },
+      {
+        src: '/projects/rag/widget_sources.png',
+        alt: 'Source cards below a completed answer, grouped by portfolio page with a preview snippet and a read-more link.',
+        caption: 'Every answer is grounded — the source cards show the portfolio content it drew from.',
+      },
+      {
+        src: '/projects/rag/widget_decline.png',
+        alt: 'An off-topic question answered with a polite decline and no source cards, showing the relevance gate at work.',
+        caption: 'Ask something off-corpus and the relevance gate declines — no sources, no hallucinated answer.',
+      },
+    ],
   },
   {
     slug: 'fix-my-vibe',
