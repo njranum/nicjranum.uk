@@ -277,10 +277,16 @@ export default function AskWidget() {
       <div aria-live="polite" aria-atomic="true" style={srOnly}>
         {announcement}
       </div>
-      {/* Start-over control — only once there's something to reset (the page <h1> is the real
-          heading, so nothing is duplicated at the top of the empty state). */}
-      {!atBase && (
-        <header className={styles.header}>
+      {/* Panel header — the box's own identity (the page <h1> "Ask me anything" is the real page
+          heading; this names the assistant living inside the box). The eyebrow is always present; the
+          Start-over control joins it on the right only once there's something to reset. Sentence-case
+          text uppercased in CSS so AT never spells out the caps; the presence dot is decorative. */}
+      <header className={styles.header}>
+        <p className={styles.title}>
+          <span className={styles.statusDot} aria-hidden="true" />
+          Portfolio assistant
+        </p>
+        {!atBase && (
           <button type="button" className={styles.reset} onClick={startOver}>
             <svg
               viewBox="0 0 24 24"
@@ -296,8 +302,8 @@ export default function AskWidget() {
             </svg>
             Start over
           </button>
-        </header>
-      )}
+        )}
+      </header>
       <div className={styles.transcript} ref={transcriptRef} onScroll={onTranscriptScroll}>
         {state.transcript.map((ex, i) => (
           <ExchangeView key={i} question={ex.question} answer={ex.answer} sources={ex.sources} />

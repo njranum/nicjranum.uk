@@ -102,11 +102,37 @@
   }
 }
 
-/* ── Header — the start-over control (only rendered once there's something to reset) ─────────── */
+/* ── Header — the box's own title (always present) + the start-over control (once resettable) ── */
 .header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* The panel's identity — the ONE monospace eyebrow treatment (home's "Selected work" etc). Names the
+   assistant inside the box, distinct from the page <h1>. A small accent presence dot leads it. */
+.title {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--rag-font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rag-muted);
+}
+
+/* Static accent dot — a quiet "present / ready" cue, not an animated spinner. */
+.statusDot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--rag-accent);
+  box-shadow: 0 0 0 3px var(--rag-accent-tint);
 }
 
 /* Start-over — a soft rounded text+icon control, sentence case. */
@@ -267,10 +293,10 @@
   margin: 0;
   font-family: var(--rag-font-mono);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--rag-eyebrow);
+  color: var(--rag-muted);
 }
 
 .chips {
