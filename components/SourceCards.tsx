@@ -28,9 +28,9 @@ import type { Source } from "@/lib/types";
 const PROVENANCE_LABEL = "From Nic's portfolio";
 
 export default function SourceCards({ sources }: { sources: Source[] }) {
-  // Expanded by default — the sources it used are the point of the page, so show them rather than
-  // hide them behind a click. Still collapsible for a long multi-turn transcript.
-  const [expanded, setExpanded] = useState(true);
+  // Collapsed by default — the summary line stands in for the cards so a long answer and the cards
+  // don't compete for one box (L3 D2). Expand on click to reveal the grouped cards.
+  const [expanded, setExpanded] = useState(false);
   const panelId = useId();
   if (sources.length === 0) return null;
   const cards = groupByTitle(sources);
