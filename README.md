@@ -6,6 +6,8 @@ behind a Cloudflare-managed custom domain.
 
 **Live:** [nicjranum.uk](https://nicjranum.uk)
 
+![The nicjranum.uk home page — a "Building software, end to end" hero beside the "ask this site" RAG widget](assets/site_main_page.png)
+
 ## Highlights
 
 - **Ask this site** — a retrieval-augmented "ask me anything" widget on the home page and at
