@@ -6,7 +6,7 @@ const styles: Record<Project['status'], { label: string; className: string }> = 
     className: 'border-emerald-200 bg-emerald-50 text-emerald-700',
   },
   wip: {
-    label: 'Work in progress',
+    label: 'In Progress',
     className: 'border-amber-200 bg-amber-50 text-amber-700',
   },
 }

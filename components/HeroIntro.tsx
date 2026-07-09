@@ -27,9 +27,9 @@ export default function HeroIntro() {
     <motion.div {...motionProps}>
       <motion.h1
         variants={itemVariants}
-        className="max-w-3xl text-[clamp(3rem,8vw,7rem)] font-bold uppercase leading-[1] tracking-tight text-neutral-900"
+        className="max-w-4xl text-[clamp(3.5rem,12vw,10rem)] font-semibold leading-[0.95] tracking-tight text-neutral-900"
       >
-        Nic Ranum
+        Nic <span className="text-accent">Ranum</span>
       </motion.h1>
       <motion.p
         variants={itemVariants}

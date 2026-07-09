@@ -192,6 +192,18 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: 'jobsift',
+    name: 'jobsift',
+    tagline:
+      'An agentic extraction pipeline that turns messy job listings into structured data, with confidence gating and human-review routing.',
+    status: 'wip',
+    stack: ['Python', 'FastAPI', 'Claude API', 'Azure Functions'],
+    repo: 'njranum/jobsift',
+    summary:
+      'jobsift ingests job listings in the shapes they actually arrive in — pasted text, saved HTML, PDFs, inconsistent formats from different boards — and runs an LLM pipeline that extracts structured fields such as salary, tech stack, seniority, location and visa language. Extraction runs inside a bounded agentic loop: low-confidence results are diagnosed and retried with a different strategy, and anything still uncertain is routed to human review rather than passed off as fact. Accuracy is designed to be measured, not assumed — a hand-labelled golden dataset of real listings scores every pipeline change on per-field accuracy, so each loop strategy is tested against a baseline instead of taken on faith.',
+    highlights: [],
+  },
 ]
 
 export function getProject(slug: string): Project | undefined {
