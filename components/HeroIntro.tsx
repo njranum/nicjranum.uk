@@ -25,17 +25,11 @@ export default function HeroIntro() {
 
   return (
     <motion.div {...motionProps}>
-      <motion.p
-        variants={itemVariants}
-        className="font-mono text-lg font-medium uppercase tracking-widest text-neutral-400"
-      >
-        Nic Ranum
-      </motion.p>
       <motion.h1
         variants={itemVariants}
-        className="mt-4 max-w-2xl text-[clamp(2.5rem,5.5vw,5rem)] font-semibold leading-[1.05] tracking-tight text-neutral-900"
+        className="max-w-3xl text-[clamp(3rem,8vw,7rem)] font-bold uppercase leading-[1] tracking-tight text-neutral-900"
       >
-        Building software, <span className="text-accent">end to end.</span>
+        Nic Ranum
       </motion.h1>
       <motion.p
         variants={itemVariants}
