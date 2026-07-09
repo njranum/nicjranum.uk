@@ -1,4 +1,4 @@
-#sjddkasndikasnkdjn nicjranum.uk
+# nicjranum.uk
 
 Personal portfolio and CV site for Nic Ranum. A statically-exported Next.js app with smooth
 page transitions and a first-party RAG "ask this site" widget, deployed to Azure Static Web Apps
@@ -6,7 +6,7 @@ behind a Cloudflare-managed custom domain.
 
 **Live:** [nicjranum.uk](https://nicjranum.uk)
 
-![The nicjranum.uk home page — a "Building software, end to end" hero beside the "ask this site" RAG widget](assets/site_main_page.png)
+![The nicjranum.uk home page — a large "Nic Ranum" hero beside the "ask this site" RAG widget](assets/site_main_page.png)
 
 ## Highlights
 
