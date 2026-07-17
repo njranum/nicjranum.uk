@@ -87,7 +87,7 @@ export const cv: Cv = {
     },
     {
       role: 'Junior Software Engineer',
-      company: 'Demsey Wood Civil',
+      company: 'Dempsey Wood Civil',
       location: 'Auckland, NZ',
       start: 'Nov 2021',
       end: 'Jan 2023',
