@@ -46,20 +46,22 @@ const rows = timeline.map((entry, i) => ({
 // year. Labels render on desktop only — `alignLeft` puts a segment's labels on whichever side
 // of the spine its card leaves free, so a label can never be covered by a card. On mobile the
 // cards sit a few px from the spine (no room for axis text) and each card's date pill already
-// annotates the axis, so mobile gets ticks only.
+// annotates the axis, so mobile gets ticks only. Returns the created elements so the scroll
+// loop can tint them accent as the progress line passes (inline colours override the class
+// defaults; clearing them falls back).
 function addTick(parent: ParentNode, y: number, big: boolean, label: string, desktop: boolean, alignLeft: boolean) {
   const tick = document.createElement('div')
-  tick.className = big
-    ? 'absolute left-[var(--spine-x)] h-[2px] w-[30px] -translate-x-1/2 -translate-y-1/2 bg-black/35'
-    : 'absolute left-[var(--spine-x)] h-px w-4 -translate-x-1/2 -translate-y-1/2 bg-black/15'
+  tick.className = `absolute left-[var(--spine-x)] -translate-x-1/2 -translate-y-1/2 transition-colors duration-[350ms] ${
+    big ? 'h-[2px] w-[30px] bg-black/35' : 'h-px w-4 bg-black/15'
+  }`
   tick.style.top = `${y}px`
   parent.appendChild(tick)
-  if (!desktop) return
+  if (!desktop) return { tick, label: null }
   const el = document.createElement('div')
   el.textContent = label
-  el.className = big
-    ? 'absolute -translate-y-1/2 whitespace-nowrap font-mono text-[13px] font-bold tracking-[0.06em] text-black/50'
-    : 'absolute -translate-y-1/2 whitespace-nowrap font-mono text-[10px] font-medium tracking-[0.06em] text-black/30'
+  el.className = `absolute -translate-y-1/2 whitespace-nowrap font-mono tracking-[0.06em] transition-colors duration-[350ms] ${
+    big ? 'text-[13px] font-bold text-black/50' : 'text-[10px] font-medium text-black/30'
+  }`
   el.style.top = `${y}px`
   if (alignLeft) {
     el.style.right = 'calc(50% + 26px)'
@@ -68,6 +70,7 @@ function addTick(parent: ParentNode, y: number, big: boolean, label: string, des
     el.style.left = 'calc(50% + 26px)'
   }
   parent.appendChild(el)
+  return { tick, label: el }
 }
 
 export default function Timeline({ accent, snapScroll = false, focusContrast = 0.75 }: TimelineProps) {
@@ -82,6 +85,11 @@ export default function Timeline({ accent, snapScroll = false, focusContrast = 0
     const desktopMq = window.matchMedia('(min-width: 768px)')
     const entries = Array.from(root.querySelectorAll<HTMLElement>('[data-tl-entry]'))
     let alive = true
+
+    // Ruler ticks with their wrapper-relative y, so the scroll loop can tint the ones the
+    // progress line has passed. Rebuilt alongside the ruler; `lit` avoids redundant writes.
+    type TickRecord = { el: HTMLElement; label: HTMLElement | null; y: number; big: boolean; lit: boolean }
+    const ticks: TickRecord[] = []
 
     const update = () => {
       const vh = window.innerHeight
@@ -112,10 +120,23 @@ export default function Timeline({ accent, snapScroll = false, focusContrast = 0
           dot.style.boxShadow = on ? '0 0 0 7px color-mix(in srgb, var(--accent) 13%, transparent)' : 'none'
         }
       }
+      const wr = root.getBoundingClientRect()
+      const filled = Math.min(Math.max(mid - wr.top, 0), wr.height)
       const progress = progressRef.current
-      if (progress) {
-        const wr = root.getBoundingClientRect()
-        progress.style.height = `${Math.min(Math.max(mid - wr.top, 0), wr.height)}px`
+      if (progress) progress.style.height = `${filled}px`
+      // Tint ticks/labels the progress line has swept past; clearing the inline colour falls
+      // back to the class default. Only ticks that crossed the edge this frame get touched.
+      for (const t of ticks) {
+        const lit = t.y <= filled
+        if (lit === t.lit) continue
+        t.lit = lit
+        if (t.big) {
+          t.el.style.backgroundColor = lit ? 'var(--accent)' : ''
+          if (t.label) t.label.style.color = lit ? 'var(--accent)' : ''
+        } else {
+          t.el.style.backgroundColor = lit ? 'color-mix(in srgb, var(--accent) 45%, transparent)' : ''
+          if (t.label) t.label.style.color = lit ? 'color-mix(in srgb, var(--accent) 65%, transparent)' : ''
+        }
       }
     }
 
@@ -123,6 +144,7 @@ export default function Timeline({ accent, snapScroll = false, focusContrast = 0
       const ruler = rulerRef.current
       if (!ruler) return
       ruler.replaceChildren()
+      ticks.length = 0
       const desktop = desktopMq.matches
       const rootTop = root.getBoundingClientRect().top
       const centerY = (el: HTMLElement) => {
@@ -155,7 +177,8 @@ export default function Timeline({ accent, snapScroll = false, focusContrast = 0
           const y = yOld + ((yNew - yOld) * (mi - mOld)) / dm
           const year = Math.floor((mi - 1) / 12)
           const label = isJan ? String(year) : `${MONTHS[month]} '${String(year).slice(2)}`
-          addTick(frag, y, isJan, label, desktop, labelsLeft)
+          const made = addTick(frag, y, isJan, label, desktop, labelsLeft)
+          ticks.push({ el: made.tick, label: made.label, y, big: isJan, lit: false })
         }
       }
       ruler.appendChild(frag)
