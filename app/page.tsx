@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { projects } from '@/lib/projects'
 import HeroAsk from '@/components/HeroAsk'
 import HeroIntro from '@/components/HeroIntro'
+import Timeline from '@/components/Timeline'
 
 // Feature the non-RAG projects here — the RAG widget is the hero's own Ask entry point.
 const featured = projects.filter(p => p.slug !== 'rag')
@@ -116,6 +117,14 @@ export default function Home() {
               See all projects →
             </Link>
           </div>
+        </section>
+
+        {/* Timeline — scroll-driven career history; closes out the page. */}
+        <section id="timeline" className="scroll-mt-24 pb-[var(--section-space)]">
+          <h2 className="text-[clamp(2.25rem,5vw,3.75rem)] font-bold leading-none tracking-tight text-neutral-900">
+            The story <span className="text-accent">so far</span>
+          </h2>
+          <Timeline />
         </section>
       </div>
     </main>
